@@ -45,7 +45,7 @@
   <body class="min-h-screen flex flex-col items-center justify-center p-4">
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
-        <center><img src="../Images/OFWA_New_Logo_Resized.png" alt="OFWA Logo" class="h-10 md:h-12 mb-2"></center>
+        <center><img src="../media/ofwalogo.png" alt="OFWA Logo" class="h-10 md:h-20 mb-2"></center>
         <h2 class="text-xl font-semibold text-gray-800">Welcome !!!</h2>
         <p class="text-gray-500 mt-1">Request for an account here</p>
       </div>
@@ -224,7 +224,7 @@
           <!-- Terms and Conditions -->
           <div class="flex items-center mb-6">
             <input type="checkbox" id="terms" class="hidden" required />
-            <div id="termsCheckbox" class="w-4 h-4 border border-gray-300 rounded flex items-center justify-center mr-2 cursor-pointer" >
+            <div id="termsCheckbox" onclick="toggleCheckbox()" class="w-4 h-4 border border-gray-300 rounded flex items-center justify-center mr-2 cursor-pointer" >
               <div class="w-2 h-2 bg-primary rounded-sm hidden" id="termsCheckmark"></div>
             </div>
             <label for="terms" class="text-sm text-gray-600 cursor-pointer">
