@@ -46,8 +46,8 @@
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
         <center><img src="../Images/OFWA_New_Logo_Resized.png" alt="OFWA Logo" class="h-10 md:h-12 mb-2"></center>
-        <h2 class="text-xl font-semibold text-gray-800">Welcome back</h2>
-        <p class="text-gray-500 mt-1">Sign in to access your team workspace</p>
+        <h2 class="text-xl font-semibold text-gray-800">Welcome !!!</h2>
+        <p class="text-gray-500 mt-1">Request for an account here</p>
       </div>
 
       <div class="bg-white rounded-lg shadow-lg p-8">
