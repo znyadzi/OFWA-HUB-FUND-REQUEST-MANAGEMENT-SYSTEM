@@ -84,3 +84,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+function toggleCheckbox() {
+  const checkbox = document.getElementById('termsCheckbox');
+  const checkmark = document.getElementById('termsCheckmark');
+  const hiddenCheckbox = document.getElementById('terms');
+  
+  const isChecked = checkbox.getAttribute('data-checked') === 'true';
+  
+  if (isChecked) {
+    checkbox.setAttribute('data-checked', 'false');
+    checkmark.classList.add('hidden');
+    hiddenCheckbox.checked = false;
+  } else {
+    checkbox.setAttribute('data-checked', 'true');
+    checkmark.classList.remove('hidden');
+    hiddenCheckbox.checked = true;
+  }
+}
