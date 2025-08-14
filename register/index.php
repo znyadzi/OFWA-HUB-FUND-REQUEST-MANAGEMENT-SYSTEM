@@ -119,10 +119,10 @@
                 required
               >
                 <option value="" disabled selected>Select your role</option>
-                <option value="admin">Admin</option>
-                <option value="manager">Manager</option>
-                <option value="coordinator">Coordinator</option>
-                <option value="volunteer">Volunteer</option>
+                <option value="Hub Lead">Admin</option>
+                <option value="Staff">Manager</option>
+                <option value="Volunteer">Coordinator</option>
+                <option value="Community member">Volunteer</option>
               </select>
               <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <i class="ri-arrow-down-s-line text-gray-400"></i>
@@ -253,6 +253,24 @@
         </div>
       </div>
     </div>
+      
+  <div id="termsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg p-6 max-w-md mx-4">
+      <h3 class="text-lg font-semibold mb-4">Terms & Conditions Required</h3>
+      <p class="text-gray-700 mb-6">
+        To proceed and use [Service Name], you must agree to our Terms and Conditions. 
+        These terms are a legally binding agreement that outlines the rules, 
+        responsibilities, and protections for both you and [Your Company Name] 
+        while using our platform. Without your agreement, we cannot grant you access.
+      </p>
+      <button 
+        id="closeTermsModal"
+        class="w-full bg-primary text-white py-2 px-4 rounded font-medium hover:bg-primary/90"
+      >
+        I Understand
+      </button>
+    </div>
+  </div>
 
     <script src="login.js"></script>
   </body>

@@ -1,43 +1,120 @@
-// Form Validation
+// Custom Checkbox Handler
 document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("loginForm");
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const emailError = document.getElementById("emailError");
-  const passwordError = document.getElementById("passwordError");
+  // Handle Terms checkbox
+  const termsCheckbox = document.getElementById("terms");
+  const customTermsCheckbox = document.getElementById("termsCheckbox");
+  const termsCheckmark = document.getElementById("termsCheckmark");
   
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    let valid = true;
-    
-    // Email validation
-    if (!validateEmail(emailInput.value)) {
-      emailError.classList.remove("hidden");
-      valid = false;
-    } else {
-      emailError.classList.add("hidden");
-    }
-    
-    // Password validation
-    if (passwordInput.value.length < 6) {
-      passwordError.classList.remove("hidden");
-      valid = false;
-    } else {
-      passwordError.classList.add("hidden");
-    }
-    
-    if (valid) {
-      // Simulate login - in a real app, this would be an API call
-      const submitButton = form.querySelector('button[type="submit"]');
-      submitButton.innerHTML =
-        '<div class="flex items-center justify-center"><div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>Signing in...</div>';
+  if (customTermsCheckbox) {
+    customTermsCheckbox.addEventListener("click", function () {
+      termsCheckbox.checked = !termsCheckbox.checked;
+      updateCheckboxVisuals(termsCheckbox, termsCheckmark, customTermsCheckbox);
+    });
+  }
 
-      setTimeout(() => {
-        alert("Login successful!");
-        submitButton.innerHTML = "Sign in";
-      }, 1500);
+  // Terms Modal elements
+  const termsModal = document.getElementById("termsModal");
+  const closeTermsModal = document.getElementById("closeTermsModal");
+  
+  if (closeTermsModal) {
+    closeTermsModal.addEventListener("click", function() {
+      termsModal.classList.add("hidden");
+    });
+  }
+
+  // Shared function to update checkbox visuals
+  function updateCheckboxVisuals(checkbox, checkmark, customCheckbox) {
+    if (checkbox.checked) {
+      checkmark.classList.remove("hidden");
+      customCheckbox.classList.add("bg-primary/10", "border-primary");
+    } else {
+      checkmark.classList.add("hidden");
+      customCheckbox.classList.remove("bg-primary/10", "border-primary");
     }
-  });
+  }
+
+  // Form Validation
+  const form = document.getElementById("registrationForm");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      let valid = true;
+      
+      // Validate all required fields
+      const requiredFields = [
+        'fullName', 'email', 'phone', 'role', 
+        'hubName', 'hubLocation', 'username', 
+        'password', 'reason'
+      ];
+      
+      requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        const errorElement = document.getElementById(`${fieldId}Error`);
+        
+        if (field && errorElement) {
+          if (!field.value.trim()) {
+            errorElement.classList.remove("hidden");
+            errorElement.textContent = `Please enter your ${field.placeholder || fieldId}`;
+            valid = false;
+          } else {
+            errorElement.classList.add("hidden");
+          }
+        }
+      });
+
+      // Special validations
+      // Email validation
+      const emailInput = document.getElementById("email");
+      const emailError = document.getElementById("emailError");
+      if (emailInput && emailError) {
+        if (!validateEmail(emailInput.value)) {
+          emailError.classList.remove("hidden");
+          emailError.textContent = "Please enter a valid email address";
+          valid = false;
+        } else {
+          emailError.classList.add("hidden");
+        }
+      }
+      
+      // Password validation
+      const passwordInput = document.getElementById("password");
+      const passwordError = document.getElementById("passwordError");
+      if (passwordInput && passwordError) {
+        if (passwordInput.value.length < 8) {
+          passwordError.classList.remove("hidden");
+          passwordError.textContent = "Password must be at least 8 characters";
+          valid = false;
+        } else {
+          passwordError.classList.add("hidden");
+        }
+      }
+      
+      // Terms checkbox validation
+      if (termsCheckbox && !termsCheckbox.checked) {
+        termsModal.classList.remove("hidden");
+        valid = false;
+      }
+      
+      if (valid) {
+        // Show loading state
+        const submitButton = form.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.innerHTML =
+          '<div class="flex items-center justify-center"><div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>Registering...</div>';
+        
+        // In a real app, this would be your form submission to PHP
+        console.log("Form would submit now");
+        // form.submit();
+        
+        // Simulate submission (remove in production)
+        setTimeout(() => {
+          alert("Registration successful!");
+          submitButton.innerHTML = "Register";
+          submitButton.disabled = false;
+        }, 1500);
+      }
+    });
+  }
 
   function validateEmail(email) {
     const re =
@@ -66,39 +143,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-
-// Custom Checkbox Handler
-document.addEventListener("DOMContentLoaded", function () {
-  const checkbox = document.getElementById("remember");
-  const customCheckbox = document.getElementById("customCheckbox");
-  const checkmark = document.getElementById("checkmark");
-  
-  customCheckbox.addEventListener("click", function () {
-    checkbox.checked = !checkbox.checked;
-    if (checkbox.checked) {
-      checkmark.classList.remove("hidden");
-      customCheckbox.classList.add("bg-primary/10", "border-primary");
-    } else {
-      checkmark.classList.add("hidden");
-      customCheckbox.classList.remove("bg-primary/10", "border-primary");
-    }
-  });
-});
-
-function toggleCheckbox() {
-  const checkbox = document.getElementById('termsCheckbox');
-  const checkmark = document.getElementById('termsCheckmark');
-  const hiddenCheckbox = document.getElementById('terms');
-  
-  const isChecked = checkbox.getAttribute('data-checked') === 'true';
-  
-  if (isChecked) {
-    checkbox.setAttribute('data-checked', 'false');
-    checkmark.classList.add('hidden');
-    hiddenCheckbox.checked = false;
-  } else {
-    checkbox.setAttribute('data-checked', 'true');
-    checkmark.classList.remove('hidden');
-    hiddenCheckbox.checked = true;
-  }
-}

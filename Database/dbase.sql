@@ -1,15 +1,15 @@
-CREATE DATABASE IF NOT EXISTS org_funding_portal
+CREATE DATABASE IF NOT EXISTS loginPortal
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
-USE org_funding_portal;
+USE loginPortal;
 
 CREATE TABLE IF NOT EXISTS hub_lead_applications (
 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 full_name VARCHAR(150) NOT NULL,
 email VARCHAR(255) NOT NULL UNIQUE,
 phone_number VARCHAR(30),
-role VARCHAR(100) NOT NULL DEFAULT 'Hub Lead',
+user_role VARCHAR(100) NOT NULL DEFAULT 'Hub Lead',
 hub_name VARCHAR(150) NOT NULL,
 hub_location VARCHAR(150),
 username VARCHAR(100) NOT NULL UNIQUE,
