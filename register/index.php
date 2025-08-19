@@ -42,7 +42,11 @@
       </div>
 
       <div class="bg-white rounded-lg shadow-lg p-8">
-        <form id="registrationForm">
+        <!-- serverError shown by script.js -->
+        <div id="serverError" class="text-red-500 text-xs mb-3 hidden"></div>
+
+        <!-- form id changed to registerForm and wired to backend.php -->
+        <form id="registerForm" method="post" action="backend.php" novalidate>
           <!-- Full Name -->
           <div class="mb-5">
             <label for="fullName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -53,6 +57,7 @@
               <input
                 type="text"
                 id="fullName"
+                name="full_name"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="John Doe"
                 required
@@ -71,6 +76,7 @@
               <input
                 type="email"
                 id="email"
+                name="email"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="name@company.com"
                 required
@@ -89,6 +95,7 @@
               <input
                 type="tel"
                 id="phone"
+                name="phone_number"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="+1 (555) 123-4567"
                 required
@@ -106,6 +113,7 @@
               </div>
               <select
                 id="role"
+                name="user_role"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary appearance-none bg-white"
                 required
               >
@@ -131,6 +139,7 @@
               <input
                 type="text"
                 id="hubName"
+                name="hub_name"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="Main Hub"
                 required
@@ -148,6 +157,7 @@
               <input
                 type="text"
                 id="hubLocation"
+                name="hub_location"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="City, State"
                 required
@@ -165,6 +175,7 @@
               <input
                 type="text"
                 id="username"
+                name="username"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="johndoe123"
                 required
@@ -183,6 +194,7 @@
               <input
                 type="password"
                 id="password"
+                name="password"
                 class="form-input w-full pl-10 pr-10 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="••••••••"
                 required
@@ -204,6 +216,7 @@
             <div class="relative">
               <textarea
                 id="reason"
+                name="reason_for_application"
                 rows="3"
                 class="form-input w-full px-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="Explain why you're applying..."
@@ -214,7 +227,7 @@
 
           <!-- Terms and Conditions -->
           <div class="flex items-center mb-6">
-            <input type="checkbox" id="terms" class="hidden" required />
+            <input type="checkbox" id="terms" name="terms" class="hidden" required />
             <div id="termsCheckbox" class="w-4 h-4 border border-gray-300 rounded flex items-center justify-center mr-2 cursor-pointer">
               <div class="w-2 h-2 bg-primary rounded-sm hidden" id="termsCheckmark"></div>
             </div>
@@ -233,7 +246,7 @@
       <div class="text-center mt-6">
         <p class="text-sm text-gray-600">
           Already have an account?
-          <a href="#" class="font-medium text-primary hover:text-primary/80"
+          <a href="../login/" class="font-medium text-primary hover:text-primary/80"
             >Sign in</a
           >
         </p>

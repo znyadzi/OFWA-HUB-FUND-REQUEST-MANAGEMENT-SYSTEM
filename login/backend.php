@@ -34,7 +34,7 @@ $dbHost = '127.0.0.1';
 $dbPort = '8889';
 $dbName = 'loginPortal';
 $dbUser = 'root';
-$dbPass = 'ROOT';
+$dbPass = 'root';
 $dsn = "mysql:host={$dbHost};port={$dbPort};dbname={$dbName};charset=utf8mb4";
 
 try {

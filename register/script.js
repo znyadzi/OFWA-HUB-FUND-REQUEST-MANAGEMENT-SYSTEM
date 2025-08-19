@@ -143,3 +143,86 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// Minimal client-side validation + fetch submit for registration form
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('registerForm');
+  if (!form) return;
+
+  const emailInput = form.querySelector('[name="email"]');
+  const passwordInput = form.querySelector('[name="password"]');
+  const usernameInput = form.querySelector('[name="username"]');
+  const fullNameInput = form.querySelector('[name="full_name"]');
+  const serverError = document.getElementById('serverError') || createServerError();
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    serverError.classList.add('hidden');
+    let errors = [];
+
+    if (!fullNameInput || fullNameInput.value.trim() === '') errors.push('Full name is required');
+    if (!emailInput || !validateEmail(emailInput.value)) errors.push('Valid email is required');
+    if (!usernameInput || usernameInput.value.trim().length < 3) errors.push('Username must be at least 3 characters');
+    if (!passwordInput || passwordInput.value.length < 6) errors.push('Password must be at least 6 characters');
+
+    if (errors.length) {
+      serverError.textContent = errors.join('; ');
+      serverError.classList.remove('hidden');
+      return;
+    }
+
+    // Prepare UI
+    const originalHtml = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="loading">Registering...</span>';
+
+    try {
+      const fd = new FormData(form);
+      const resp = await fetch(form.action || 'backend.php', {
+        method: 'POST',
+        body: fd,
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' },
+      });
+
+      let data;
+      try {
+        data = await resp.json();
+      } catch (err) {
+        throw new Error('Invalid server response');
+      }
+
+      if (resp.ok && data && data.ok) {
+        // Redirect to login page or show a success UI
+        // Change target as needed
+        window.location.href = '../login/';
+        return;
+      } else {
+        const msg = (data && (data.error || data.message)) || 'Registration failed';
+        serverError.textContent = msg;
+        serverError.classList.remove('hidden');
+      }
+    } catch (err) {
+      serverError.textContent = err.message || 'Network error';
+      serverError.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHtml;
+    }
+  });
+
+  function validateEmail(email) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email || '').toLowerCase());
+  }
+
+  function createServerError() {
+    const div = document.createElement('div');
+    div.id = 'serverError';
+    div.className = 'text-red-600 text-sm mt-2';
+    form.prepend(div);
+    div.classList.add('hidden');
+    return div;
+  }
+});
