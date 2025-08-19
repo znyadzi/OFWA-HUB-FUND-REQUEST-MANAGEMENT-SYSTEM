@@ -1,15 +1,18 @@
-// Form Validation
+// Form Validation and AJAX submit
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("loginForm");
   const emailInput = document.getElementById("email");
   const passwordInput = document.getElementById("password");
   const emailError = document.getElementById("emailError");
   const passwordError = document.getElementById("passwordError");
-  
-  form.addEventListener("submit", function (e) {
+  const serverError = document.getElementById("serverError");
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
+    serverError.classList.add("hidden");
     let valid = true;
-    
+
     // Email validation
     if (!validateEmail(emailInput.value)) {
       emailError.classList.remove("hidden");
@@ -17,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       emailError.classList.add("hidden");
     }
-    
+
     // Password validation
     if (passwordInput.value.length < 6) {
       passwordError.classList.remove("hidden");
@@ -25,17 +28,52 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       passwordError.classList.add("hidden");
     }
-    
-    if (valid) {
-      // Simulate login - in a real app, this would be an API call
-      const submitButton = form.querySelector('button[type="submit"]');
-      submitButton.innerHTML =
-        '<div class="flex items-center justify-center"><div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>Signing in...</div>';
 
-      setTimeout(() => {
-        alert("Login successful!");
-        submitButton.innerHTML = "Sign in";
-      }, 1500);
+    if (!valid) return;
+
+    // Prepare UI
+    const originalButtonHtml = submitButton.innerHTML;
+    submitButton.disabled = true;
+    submitButton.innerHTML =
+      '<div class="flex items-center justify-center"><div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>Signing in...</div>';
+
+    try {
+      const formData = new FormData(form);
+      // POST to backend.php (relative)
+      const resp = await fetch(form.action || "backend.php", {
+        method: "POST",
+        body: formData,
+        credentials: "same-origin",
+        headers: {
+          // Don't set Content-Type here when using FormData
+          Accept: "application/json",
+        },
+      });
+
+      let data;
+      try {
+        data = await resp.json();
+      } catch (err) {
+        throw new Error("Invalid server response");
+      }
+
+      if (resp.ok && data && data.ok) {
+        // On success: store minimal message and redirect up one level.
+        // Assumption: after successful login the app has a protected page at the parent path.
+        // You can change the redirect target to your real post-login page.
+        window.location.href = "../";
+        return;
+      } else {
+        const msg = (data && data.error) || (data && data.message) || "Login failed";
+        serverError.textContent = msg;
+        serverError.classList.remove("hidden");
+      }
+    } catch (err) {
+      serverError.textContent = err.message || "Network error";
+      serverError.classList.remove("hidden");
+    } finally {
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonHtml;
     }
   });
 
@@ -51,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const togglePassword = document.getElementById("togglePassword");
   const password = document.getElementById("password");
   const passwordIcon = document.getElementById("passwordIcon");
-  
+
   togglePassword.addEventListener("click", function () {
     const type =
       password.getAttribute("type") === "password" ? "text" : "password";
@@ -72,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const checkbox = document.getElementById("remember");
   const customCheckbox = document.getElementById("customCheckbox");
   const checkmark = document.getElementById("checkmark");
-  
+
   customCheckbox.addEventListener("click", function () {
     checkbox.checked = !checkbox.checked;
     if (checkbox.checked) {

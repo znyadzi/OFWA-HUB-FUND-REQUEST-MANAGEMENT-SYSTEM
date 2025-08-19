@@ -45,13 +45,14 @@
   <body class="min-h-screen flex flex-col items-center justify-center p-4">
     <div class="w-full max-w-md">
       <div class="text-center mb-8">
-        <center><img src="../media/ofwalogo.png" alt="OFWA Logo" class="h-10 md:h-20 mb-2"></center>
+        <center><img src="../media/ofwaLogo.png" alt="OFWA Logo" class="h-10 md:h-20 mb-2"></center>
         <h2 class="text-xl font-semibold text-gray-800">Welcome back</h2>
         <p class="text-gray-500 mt-1">Sign in to access your team workspace</p>
       </div>
 
       <div class="bg-white rounded-lg shadow-lg p-8">
-        <form id="loginForm">
+        <!-- Form posts to backend.php (JS will intercept and POST via fetch) -->
+        <form id="loginForm" method="post" action="backend.php" novalidate>
           <div class="mb-5">
             <label
               for="email"
@@ -67,6 +68,7 @@
               <input
                 type="email"
                 id="email"
+                name="email"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="name@company.com"
                 required
@@ -93,6 +95,7 @@
               <input
                 type="password"
                 id="password"
+                name="password"
                 class="form-input w-full pl-10 pr-10 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
                 placeholder="••••••••"
                 required
@@ -110,9 +113,11 @@
             </div>
           </div>
 
+          <div id="serverError" class="text-red-500 text-xs mt-1 hidden"></div>
+
           <div class="flex items-center justify-between mb-6">
             <div class="flex items-center">
-              <input type="checkbox" id="remember" class="hidden" />
+              <input type="checkbox" id="remember" name="remember" value="1" class="hidden" />
               <div
                 id="customCheckbox"
                 class="w-4 h-4 border border-gray-300 rounded flex items-center justify-center mr-2 cursor-pointer"
