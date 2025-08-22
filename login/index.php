@@ -57,7 +57,7 @@
             <label
               for="email"
               class="block text-sm font-medium text-gray-700 mb-1"
-              >Email address</label
+              >Email or username</label
             >
             <div class="relative">
               <div
@@ -66,16 +66,16 @@
                 <i class="ri-mail-line text-gray-400"></i>
               </div>
               <input
-                type="email"
+                type="text"
                 id="email"
                 name="email"
                 class="form-input w-full pl-10 pr-3 py-2 border border-gray-300 rounded text-gray-700 focus:ring-primary focus:border-primary"
-                placeholder="name@company.com"
+                placeholder="name@company.com or username"
                 required
               />
             </div>
             <div id="emailError" class="text-red-500 text-xs mt-1 hidden">
-              Please enter a valid email address
+              Please enter a valid email address or username
             </div>
           </div>
           <div class="mb-5">
@@ -117,7 +117,7 @@
 
           <div class="flex items-center justify-between mb-6">
             <div class="flex items-center">
-              <input type="checkbox" id="remember" name="remember" value="1" class="hidden" />
+              <input type="checkbox" id="remember" name="remember" class="hidden" />
               <div
                 id="customCheckbox"
                 class="w-4 h-4 border border-gray-300 rounded flex items-center justify-center mr-2 cursor-pointer"
