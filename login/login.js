@@ -1,7 +1,7 @@
-// Form Validation and AJAX submit
+// Form Validation and AJAX submit (accepts email OR username)
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("loginForm");
-  const emailInput = document.getElementById("email");
+  const emailInput = document.getElementById("email"); // holds email OR username
   const passwordInput = document.getElementById("password");
   const emailError = document.getElementById("emailError");
   const passwordError = document.getElementById("passwordError");
@@ -13,12 +13,30 @@ document.addEventListener("DOMContentLoaded", function () {
     serverError.classList.add("hidden");
     let valid = true;
 
-    // Email validation
-    if (!validateEmail(emailInput.value)) {
+    const identifier = (emailInput.value || "").trim();
+
+    // Identifier validation: allow either email or username
+    if (identifier === "") {
+      emailError.textContent = "Please enter your email or username";
       emailError.classList.remove("hidden");
       valid = false;
+    } else if (identifier.includes("@")) {
+      if (!validateEmail(identifier)) {
+        emailError.textContent = "Please enter a valid email address";
+        emailError.classList.remove("hidden");
+        valid = false;
+      } else {
+        emailError.classList.add("hidden");
+      }
     } else {
-      emailError.classList.add("hidden");
+      // username rules: at least 3 characters, no spaces
+      if (identifier.length < 3 || /\s/.test(identifier)) {
+        emailError.textContent = "Please enter a valid username (3+ chars, no spaces)";
+        emailError.classList.remove("hidden");
+        valid = false;
+      } else {
+        emailError.classList.add("hidden");
+      }
     }
 
     // Password validation
@@ -45,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
         body: formData,
         credentials: "same-origin",
         headers: {
-          // Don't set Content-Type here when using FormData
           Accept: "application/json",
         },
       });
@@ -58,9 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (resp.ok && data && data.ok) {
-        // On success: store minimal message and redirect up one level.
-        // Assumption: after successful login the app has a protected page at the parent path.
-        // You can change the redirect target to your real post-login page.
+        // Successful login -> redirect to parent (change as needed)
         window.location.href = "../";
         return;
       } else {
@@ -84,11 +99,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Password Toggle
+// Password Toggle (unchanged)
 document.addEventListener("DOMContentLoaded", function () {
   const togglePassword = document.getElementById("togglePassword");
   const password = document.getElementById("password");
   const passwordIcon = document.getElementById("passwordIcon");
+  if (!togglePassword) return;
 
   togglePassword.addEventListener("click", function () {
     const type =
@@ -105,11 +121,12 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// Custom Checkbox Handler
+// Custom Checkbox (unchanged)
 document.addEventListener("DOMContentLoaded", function () {
   const checkbox = document.getElementById("remember");
   const customCheckbox = document.getElementById("customCheckbox");
   const checkmark = document.getElementById("checkmark");
+  if (!customCheckbox) return;
 
   customCheckbox.addEventListener("click", function () {
     checkbox.checked = !checkbox.checked;
